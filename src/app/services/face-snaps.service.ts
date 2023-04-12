@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { FaceSnap } from "../models/face-snap.model";
-
+import { NewFaceSnapComponent } from "../new-face-snap/new-face-snap.component";
 
 @Injectable({
   //permet de preciser que le service est utilisable depuis la racine du projet
@@ -10,6 +10,15 @@ import { FaceSnap } from "../models/face-snap.model";
 export class FaceSnapsService{
 //on ne mets pas de contructeur dans un service pas de methode
 //OnInit
+addFaceSnap(formValue: { title: string, description: string, imageUrl: string, location?: string }) {
+  const faceSnap: FaceSnap = {
+      ...formValue,
+      snaps: 0,
+      createdDate: new Date(),
+      id: this.faceSnaps[this.faceSnaps.length - 1].id + 1
+  };
+  this.faceSnaps.push(faceSnap);
+}
 
 faceSnaps: FaceSnap[] = [
   {
@@ -56,6 +65,7 @@ getFaceSnapById(faceSnapId: number): FaceSnap {
 
 snapFaceSnapById(faceSnapId: number, snapType: string): void {
   const faceSnap = this.getFaceSnapById(faceSnapId);
+  //operateur ternaire pouvant remplacer le if()
   snapType === 'like' ? faceSnap.snaps++ : faceSnap.snaps--;
 }
 
